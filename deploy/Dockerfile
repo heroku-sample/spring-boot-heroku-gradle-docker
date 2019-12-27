@@ -1,0 +1,1 @@
+FROM ncc0706/spring-boot-heroku-gradle
