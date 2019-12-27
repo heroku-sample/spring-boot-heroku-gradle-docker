@@ -2,11 +2,27 @@ plugins {
     id 'org.springframework.boot' version '2.2.2.RELEASE'
     id 'io.spring.dependency-management' version '1.0.8.RELEASE'
     id 'java'
+    id 'com.palantir.docker' version '0.22.1'
 }
 
 group = 'io.arukas'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
+
+bootJar {
+    baseName = 'spring-boot-heroku-gradle'
+    version = '0.0.1'
+}
+
+docker {
+    dependsOn build
+    tags 'latest'
+    dockerfile file('Dockerfile')
+    name "ncc0706/${bootJar.baseName}"
+    files bootJar.archivePath
+    buildArgs(['JAR_FILE': "${bootJar.archiveName}"])
+}
 
 repositories {
     mavenCentral()
